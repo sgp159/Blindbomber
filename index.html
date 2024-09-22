@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <title>
+        Blind Bomber
+    </title>
+    <style>
+        #blindBomber {
+            position: absolute;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="Blind-Bomber_1.png" id="blindBomber" />
+    <script>
+        var blindBomber = document.getElementById('blindBomber');
+        var y = 0;
+        var x = 0;
+        var deltaX = 0;
+        var deltaY = 0;
+        document.onkeydown = function (evt) {
+            if (evt.key == "ArrowUp") {
+                deltaY = -10;
+            }
+            if (evt.key == "ArrowDown") {
+                deltaY = 10;
+            }
+            if (evt.key == "ArrowLeft") {
+                deltaX = -10;
+            }
+            if (evt.key == "ArrowRight") {
+                deltaX = 10;
+            }
+        }
+        document.onkeyup = function () {
+            deltaX = 0;
+            deltaY = 0;
+        }
+        function animation() {
+            if (deltaX) {
+                x += deltaX;
+            }
+            if (deltaY) {
+                y += deltaY;
+            }
+            blindBomber.style.left = x + "px";
+            blindBomber.style.top = y + "px";
+            requestAnimationFrame(animation);
+        }
+        requestAnimationFrame(animation);
+    </script>
+</body>
+
+</html>
