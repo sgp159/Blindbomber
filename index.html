@@ -8,7 +8,14 @@
         #blindBomber {
             position: absolute;
             width: 100px;
+            z-index: 999;
         }
+
+        .bomb {
+            position: absolute;
+        }
+
+        @keyframes explode
     </style>
 </head>
 
@@ -20,6 +27,29 @@
         var x = 0;
         var deltaX = 0;
         var deltaY = 0;
+        function explode(bomb) {
+            var bombTransformation = [
+                { transform: "scale(1)" },
+                { transform: "scale(2)" }
+            ];
+            var bombTransformationProperties = {
+                duration: 250,
+                iterations: 1,
+            };
+            var bombAnimation = bomb.animate(bombTransformation, bombTransformationProperties);
+            bombAnimation.onfinish = function () {
+                bomb.remove();
+            }
+        }
+        function dropBomb() {
+            var bomb = document.createElement('img');
+            bomb.src = 'bombe.png';
+            bomb.classList.add('bomb');
+            bomb.style.left = (x - 100) + "px";
+            bomb.style.top = (y + 50) + "px";
+            document.body.appendChild(bomb);
+            setTimeout(() => explode(bomb), 1000);
+        }
         document.onkeydown = function (evt) {
             if (evt.key == "ArrowUp") {
                 deltaY = -10;
@@ -32,6 +62,9 @@
             }
             if (evt.key == "ArrowRight") {
                 deltaX = 10;
+            }
+            if (evt.key == ' ') {
+                dropBomb();
             }
         }
         document.onkeyup = function () {
