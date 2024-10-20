@@ -1,14 +1,18 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require('express');
+const WebSocket = require('ws');
+const port = 3000;
+const http = require('http');
+const app = express();
+app.use(express.static('client'));
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+server.listen(port, function () {
+    console.log('Listening on http://localhost:' + port);
+});
 
-app.get('/sami', (req, res) => {
-    res.send('Hello Sami!')
-})
-app.get('/david', (req, res) => {
-    res.send('Hello David!')
-})
-app.use(express.static('client'))
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+wss.on('connection', function connection(ws, req) {
+    const ip = req.socket.remoteAddress;
+    console.log("neue verbindung von: " + ip);
+
+    ws.on('error', console.error);
+});

@@ -25,6 +25,13 @@
         var x = 0;
         var deltaX = 0;
         var deltaY = 0;
+
+        const protocol = document.location.protocol == "http:" ? "ws://" : "wss://";
+        const socket = new WebSocket(protocol + document.location.host);
+        socket.addEventListener("open", (event) => {
+            alert("neue Verbindung zum Server");
+        });
+
         function hitDetection(bomb, player) {
             const bombRect = bomb.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
