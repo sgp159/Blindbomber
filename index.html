@@ -14,8 +14,6 @@
         .bomb {
             position: absolute;
         }
-
-        @keyframes explode
     </style>
 </head>
 
@@ -27,6 +25,20 @@
         var x = 0;
         var deltaX = 0;
         var deltaY = 0;
+        function hitDetection(bomb, player) {
+            const bombRect = bomb.getBoundingClientRect();
+            const playerRect = player.getBoundingClientRect();
+            if (
+                playerRect.right >= bombRect.left &&
+                playerRect.left <= bombRect.right &&
+                playerRect.bottom >= bombRect.top &&
+                playerRect.top <= bombRect.bottom
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         function explode(bomb) {
             var bombTransformation = [
                 { transform: "scale(1)" },
@@ -38,8 +50,13 @@
             };
             var bombAnimation = bomb.animate(bombTransformation, bombTransformationProperties);
             bombAnimation.onfinish = function () {
+                if (hitDetection(bomb, blindBomber)) {
+                    blindBomber.remove();
+                }
                 bomb.remove();
             }
+            var boom = new Audio("boom.mp3");
+            boom.play();
         }
         function dropBomb() {
             var bomb = document.createElement('img');
